@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมระเบิดล่าคำประสม - ท้าทายความรู้ภาษาไทย</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            animation: backgroundShift 10s ease-in-out infinite alternate;
+        }
+        
+        @keyframes backgroundShift {
+            0% { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+            100% { background: linear-gradient(135deg, #f093fb 0%, #667eea 50%, #764ba2 100%); }
+        }
+        
+        .welcome-screen {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            max-width: 950px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: welcomeSlide 1s ease-out;
+        }
+        
+        @keyframes welcomeSlide {
+            0% { transform: translateY(-100px) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 35px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            max-width: 950px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+        
+        .game-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.2); }
+        }
+        
+        .game-subtitle {
+            font-size: 1.6rem;
+            color: #718096;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        
+        .welcome-description {
+            background: linear-gradient(45deg, #4299e1, #3182ce);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            font-size: 1.3rem;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(66, 153, 225, 0.4);
+            position: relative;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+        
+        .welcome-description::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: descriptionShine 4s infinite;
+        }
+        
+        @keyframes descriptionShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .game-rules {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+            border-radius: 25px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .game-rules h3 {
+            font-size: 2rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .rule-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .rule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+            border: 2px solid #667eea;
+        }
+        
+        .rule-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .rule-card h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .rule-card p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+        
+        .main-credits-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+            border-radius: 25px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .main-credits-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .main-credits-header h3 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .team-badge-main {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(72, 187, 120, 0.3);
+        }
+        
+        .main-credits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .main-credit-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-credit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            animation: mainCreditShine 4s infinite;
+        }
+        
+        @keyframes mainCreditShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .main-credit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+            border: 2px solid #667eea;
+        }
+        
+        .developer-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .main-credit-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        
+        .main-credit-card p {
+            font-size: 0.95rem;
+            color: #718096;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .role-tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .start-game-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            border: none;
+            padding: 25px 60px;
+            border-radius: 35px;
+            font-size: 2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Kanit', sans-serif;
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+            animation: startBtnPulse 2s infinite alternate;
+        }
+        
+        @keyframes startBtnPulse {
+            0% { 
+                transform: scale(1);
+                box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+            }
+            100% { 
+                transform: scale(1.05);
+                box-shadow: 0 20px 45px rgba(255, 107, 107, 0.6);
+            }
+        }
+        
+        .start-game-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .start-game-btn:hover::before {
+            left: 100%;
+        }
+        
+        .start-game-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(255, 107, 107, 0.6);
+            animation: none;
+        }
+        
+        .challenge-alert {
+            background: linear-gradient(45deg, #ff4757, #ff3838);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 25px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            animation: challengePulse 2s infinite;
+            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.4);
+        }
+        
+        @keyframes challengePulse {
+            0% { transform: scale(1); box-shadow: 0 10px 25px rgba(255, 71, 87, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 15px 35px rgba(255, 71, 87, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 10px 25px rgba(255, 71, 87, 0.4); }
+        }
+        
+        .score-dashboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+        
+        .score-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 18px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .score-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: cardShine 3s infinite;
+        }
+        
+        @keyframes cardShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .score-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .score-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            display: block;
+        }
+        
+        .score-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+        
+        .progress-section {
+            margin-bottom: 30px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 1.1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 28px;
+            background: #e2e8f0;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169, #2f855a);
+            width: 0%;
+            transition: width 0.6s ease;
+            border-radius: 18px;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: progressShimmer 2s infinite;
+        }
+        
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .bomb-zone {
+            position: relative;
+            margin: 35px 0;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+            border-radius: 25px;
+            border: 3px dashed rgba(255, 71, 87, 0.4);
+        }
+        
+        .timer-display {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #ff4757, #ff3838);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 35px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            box-shadow: 0 12px 30px rgba(255, 71, 87, 0.5);
+            z-index: 10;
+        }
+        
+        .timer-display.critical {
+            animation: criticalTimer 0.4s infinite alternate;
+            background: linear-gradient(45deg, #ff1744, #d50000);
+        }
+        
+        @keyframes criticalTimer {
+            0% { 
+                transform: translateX(-50%) scale(1);
+                box-shadow: 0 12px 30px rgba(255, 71, 87, 0.5);
+            }
+            100% { 
+                transform: translateX(-50%) scale(1.15);
+                box-shadow: 0 18px 40px rgba(255, 71, 87, 0.8);
+            }
+        }
+        
+        .bomb {
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle at 30% 30%, #4a5568, #1a202c);
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .bomb:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
+        }
+        
+        .bomb.ultra-critical {
+            animation: ultraShake 0.2s infinite;
+        }
+        
+        @keyframes ultraShake {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: translateX(-4px) translateY(-4px) rotate(-2deg); }
+            50% { transform: translateX(4px) translateY(-4px) rotate(2deg); }
+            75% { transform: translateX(-4px) translateY(4px) rotate(-1deg); }
+        }
+        
+        .bomb::before {
+            content: '💣';
+            font-size: 6rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.4));
+        }
+        
+        .fuse {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 50px;
+            background: linear-gradient(to bottom, #8b4513, #654321);
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .spark {
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ff4500, #ff6347);
+            border-radius: 50%;
+            animation: sparkIntense 0.25s infinite alternate;
+            box-shadow: 0 0 20px #ff4500;
+        }
+        
+        @keyframes sparkIntense {
+            0% { 
+                opacity: 1; 
+                transform: translateX(-50%) scale(1);
+                box-shadow: 0 0 20px #ff4500;
+            }
+            100% { 
+                opacity: 0.6; 
+                transform: translateX(-50%) scale(1.5);
+                box-shadow: 0 0 30px #ff4500;
+            }
+        }
+        
+        .instruction-panel {
+            background: linear-gradient(45deg, #4299e1, #3182ce);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(66, 153, 225, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .instruction-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: instructionShine 4s infinite;
+        }
+        
+        @keyframes instructionShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 35px 0;
+        }
+        
+        .word-btn {
+            background: linear-gradient(45deg, #ed8936, #dd6b20);
+            color: white;
+            border: none;
+            padding: 30px;
+            border-radius: 25px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(237, 137, 54, 0.4);
+            font-family: 'Kanit', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .word-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .word-btn:hover::before {
+            left: 100%;
+        }
+        
+        .word-btn:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(237, 137, 54, 0.5);
+        }
+        
+        .word-btn.correct {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            animation: correctPulse 1s ease;
+        }
+        
+        .word-btn.wrong {
+            background: linear-gradient(45deg, #f56565, #e53e3e);
+            animation: wrongShake 1s ease;
+        }
+        
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { 
+                transform: scale(1.15); 
+                box-shadow: 0 0 40px rgba(72, 187, 120, 0.8);
+            }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-20px); }
+            40% { transform: translateX(20px); }
+            60% { transform: translateX(-15px); }
+            80% { transform: translateX(15px); }
+        }
+        
+        .explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18rem;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+        
+        .explosion.active {
+            animation: megaExplosion 2.5s ease-out;
+        }
+        
+        @keyframes megaExplosion {
+            0% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0) rotate(0deg); 
+            }
+            15% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(0.6) rotate(90deg); 
+            }
+            40% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1.2) rotate(270deg); 
+            }
+            70% { 
+                opacity: 0.8; 
+                transform: translate(-50%, -50%) scale(1.8) rotate(540deg); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(3) rotate(900deg); 
+            }
+        }
+        
+        .game-over {
+            display: none;
+            background: rgba(0, 0, 0, 0.95);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+        
+        .game-over-content {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            animation: gameOverSlide 0.8s ease-out;
+        }
+        
+        @keyframes gameOverSlide {
+            0% { transform: translateY(-150px) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        
+        .game-over h2 {
+            font-size: 3.2rem;
+            margin-bottom: 25px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+        }
+        
+        .final-score {
+            font-size: 5rem;
+            font-weight: 700;
+            margin: 30px 0;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.4);
+        }
+        
+        .restart-btn {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            border: none;
+            padding: 25px 50px;
+            border-radius: 35px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Kanit', sans-serif;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+        
+        .restart-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.5);
+        }
+        
+        .learn-btn {
+            background: linear-gradient(45deg, #4299e1, #3182ce);
+            color: white;
+            border: none;
+            padding: 25px 50px;
+            border-radius: 35px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Kanit', sans-serif;
+            box-shadow: 0 10px 25px rgba(66, 153, 225, 0.4);
+        }
+        
+        .learn-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(66, 153, 225, 0.5);
+        }
+        
+        .learning-section {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+        }
+        
+        .learning-content {
+            max-width: 1200px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            animation: learningSlide 0.8s ease-out;
+        }
+        
+        @keyframes learningSlide {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        .learning-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e2e8f0;
+            padding-bottom: 20px;
+        }
+        
+        .learning-header h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: linear-gradient(45deg, #ff4757, #ff3838);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+        
+        .close-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.6);
+        }
+        
+        .learning-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-btn {
+            background: linear-gradient(45deg, #e2e8f0, #cbd5e0);
+            color: #4a5568;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Kanit', sans-serif;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .tab-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2d3748;
+        }
+        
+        .definition-box {
+            background: linear-gradient(45deg, #f7fafc, #edf2f7);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .definition-box p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 0;
+            color: #2d3748;
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .example-card {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .correct-example {
+            background: linear-gradient(45deg, #f0fff4, #c6f6d5);
+            border: 2px solid #48bb78;
+        }
+        
+        .wrong-example {
+            background: linear-gradient(45deg, #fff5f5, #fed7d7);
+            border: 2px solid #f56565;
+        }
+        
+        .example-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #2d3748;
+            text-align: center;
+        }
+        
+        .example-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .example-card li {
+            padding: 8px 0;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .example-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .learning-summary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .learning-summary h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .summary-box p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-correct {
+            background: rgba(72, 187, 120, 0.3);
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        
+        .learning-footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .practice-btn {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Kanit', sans-serif;
+            box-shadow: 0 10px 25px rgba(72, 187, 120, 0.4);
+        }
+        
+        .practice-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(72, 187, 120, 0.5);
+        }
+        
+        .credits-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #e2e8f0;
+        }
+        
+        .credits-section h3 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .credits-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .credit-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .credit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            animation: creditShine 3s infinite;
+        }
+        
+        @keyframes creditShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .credit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 2px solid #667eea;
+        }
+        
+        .developer-avatar {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .credit-card h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .credit-card p {
+            font-size: 1.1rem;
+            color: #718096;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .role-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .team-info {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .team-badge {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(72, 187, 120, 0.3);
+            margin-bottom: 15px;
+        }
+        
+        .badge-icon {
+            font-size: 1.5rem;
+        }
+        
+        .development-note {
+            font-size: 1.1rem;
+            color: #4a5568;
+            font-style: italic;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .info-box {
+            background: linear-gradient(45deg, #9f7aea, #805ad5);
+            color: white;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .word-type-hint {
+            background: linear-gradient(45deg, #38b2ac, #319795);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin: 15px 0;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .screen-shake {
+            animation: screenShake 0.8s ease-in-out;
+        }
+        
+        @keyframes screenShake {
+            0%, 100% { transform: translateX(0); }
+            10% { transform: translateX(-15px); }
+            20% { transform: translateX(15px); }
+            30% { transform: translateX(-12px); }
+            40% { transform: translateX(12px); }
+            50% { transform: translateX(-8px); }
+            60% { transform: translateX(8px); }
+            70% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+            90% { transform: translateX(-2px); }
+        }
+        
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2.5rem;
+            }
+            
+            .start-game-btn {
+                font-size: 1.6rem;
+                padding: 20px 40px;
+            }
+            
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .words-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .bomb {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .bomb::before {
+                font-size: 5rem;
+            }
+            
+            .timer-display {
+                font-size: 2rem;
+                padding: 15px 30px;
+            }
+            
+            .learning-content {
+                margin: 20px;
+                padding: 25px;
+            }
+            
+            .learning-header h2 {
+                font-size: 2rem;
+            }
+            
+            .learning-tabs {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .tab-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .example-card {
+                padding: 20px;
+            }
+            
+            .restart-btn, .learn-btn {
+                padding: 20px 35px;
+                font-size: 1.4rem;
+            }
+            
+            .practice-btn {
+                padding: 18px 35px;
+                font-size: 1.2rem;
+            }
+            
+            .credits-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .credit-card {
+                padding: 25px;
+            }
+            
+            .credit-card h4 {
+                font-size: 1.2rem;
+            }
+            
+            .developer-avatar {
+                font-size: 3rem;
+            }
+            
+            .team-badge {
+                padding: 12px 25px;
+                font-size: 1.1rem;
+            }
+            
+            .credits-section h3 {
+                font-size: 1.8rem;
+            }
+            
+            .main-credits-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .main-credit-card {
+                padding: 18px;
+            }
+            
+            .main-credit-card h4 {
+                font-size: 1rem;
+            }
+            
+            .developer-icon {
+                font-size: 2rem;
+            }
+            
+            .team-badge-main {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+            
+            .main-credits-header h3 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- หน้าต้อนรับ -->
+    <div class="welcome-screen" id="welcome-screen">
+        <h1 class="game-title">🔥 เกมระเบิดล่าคำประสม</h1>
+        <p class="game-subtitle">ท้าทายความรู้ภาษาไทย - เลือกคำประสมให้ถูกต้อง!</p>
+        
+        <div class="welcome-description">
+            🎯 <strong>ภารกิจ:</strong> เลือกเฉพาะคำประสมจากคำประเภทอื่นๆ ก่อนที่ระเบิดจะแตก!<br>
+            ⏰ <strong>เวลา:</strong> 7 วินาทีต่อข้อ | 🎖️ <strong>เป้าหมาย:</strong> 1,500 แต้ม
+        </div>
+        
+        <div class="game-rules">
+            <h3>📋 กติกาการเล่น</h3>
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <div class="rule-icon">🎯</div>
+                    <h4>เลือกคำประสม</h4>
+                    <p>เลือกเฉพาะคำที่เกิดจากการรวมคำสองคำเข้าด้วยกัน เช่น "น้ำแข็ง", "ดินสอ"</p>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon">⚠️</div>
+                    <h4>หลีกเลี่ยงคำอื่น</h4>
+                    <p>อย่าเลือกคำสมาส, คำซ้อน, คำมูล, คำสมาสสนธิ เพราะจะทำให้ระเบิดแตก!</p>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon">⏰</div>
+                    <h4>จับเวลา 7 วินาที</h4>
+                    <p>ตอบให้เร็วก่อนที่เวลาจะหมด หากไม่ทันระเบิดจะแตกทันที</p>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-icon">🏆</div>
+                    <h4>เป้าหมาย 1,500 แต้ม</h4>
+                    <p>ตอบถูก 1 ข้อได้ 100 แต้ม รวบรวมแต้มให้ครบเป้าหมายเพื่อชนะ</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-credits-section">
+            <div class="main-credits-header">
+                <h3>👨‍💻 ทีมพัฒนา</h3>
+                <div class="team-badge-main">
+                    <span class="badge-icon">🎓</span>
+                    <span>Gifted Computer Program</span>
+                </div>
+            </div>
+            <div class="main-credits-grid">
+                <div class="main-credit-card">
+                    <div class="developer-icon">🧑‍💻</div>
+                    <h4>นาย อัชฌา ปาลี</h4>
+                    <p>เลขที่ 2 ชั้น ม.5/5</p>
+                    <span class="role-tag">Lead Developer</span>
+                </div>
+                <div class="main-credit-card">
+                    <div class="developer-icon">👨‍💻</div>
+                    <h4>นาย ปันณวิชญ์ นพสุจริตรัตน์</h4>
+                    <p>เลขที่ 10 ชั้น ม.5/5</p>
+                    <span class="role-tag">Game Designer</span>
+                </div>
+                <div class="main-credit-card">
+                    <div class="developer-icon">🎨</div>
+                    <h4>นาย ภัทร์ภณ ตามา</h4>
+                    <p>เลขที่ 22 ชั้น ม.5/5</p>
+                    <span class="role-tag">UI/UX Designer</span>
+                </div>
+            </div>
+        </div>
+        
+        <button class="start-game-btn" onclick="startGameFromWelcome()">
+            🚀 เริ่มเกม
+        </button>
+    </div>
+    
+    <!-- หน้าเกม -->
+    <div class="game-container" id="game-container">
+        <h1 class="game-title">🔥 เกมระเบิดล่าคำประสม</h1>
+        <p class="game-subtitle">ท้าทายความรู้ภาษาไทย - เลือกคำประสมให้ถูกต้อง!</p>
+        
+        <div class="challenge-alert">
+            ⚡ ภารกิจสุดท้าทาย: เลือกเฉพาะคำประสมจากคำประเภทอื่นๆ ใน 7 วินาที!
+        </div>
+        
+        <div class="info-box">
+            <strong>📚 คำประสม</strong> คือคำที่เกิดจากการนำคำสองคำมารวมกัน เช่น "น้ำแข็ง", "ดินสอ"<br>
+            <strong>⚠️ ระวัง!</strong> คำสมาส, คำซ้อน, คำมูล, คำสมาสสนธิ ไม่ใช่คำประสม จะทำให้ระเบิดแตก!
+        </div>
+        
+        <div class="word-type-hint" id="word-hint">
+            💡 คำใบ้: ในข้อนี้มีคำประสม 1 คำ และคำประเภทอื่น 3 คำ
+        </div>
+        
+        <div class="score-dashboard">
+            <div class="score-card">
+                <span class="score-label">คะแนน</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="score-card">
+                <span class="score-label">เป้าหมาย</span>
+                <span class="score-value">1500</span>
+            </div>
+            <div class="score-card">
+                <span class="score-label">ข้อที่</span>
+                <span class="score-value" id="question-num">1</span>
+            </div>
+            <div class="score-card">
+                <span class="score-label">เวลา</span>
+                <span class="score-value" id="time-left">7</span>
+            </div>
+        </div>
+        
+        <div class="progress-section">
+            <div class="progress-info">
+                <span>ความคืบหน้าสู่เป้าหมาย</span>
+                <span id="progress-text">0/1500</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+        </div>
+        
+        <div class="bomb-zone">
+            <div class="timer-display" id="timer">7</div>
+            <div class="bomb" id="bomb">
+                <div class="fuse"></div>
+                <div class="spark"></div>
+            </div>
+            <div class="explosion" id="explosion">💥</div>
+        </div>
+        
+        <div class="instruction-panel" id="instruction">
+            เลือกคำประสมจากตัวเลือกด้านล่าง
+        </div>
+        
+        <div class="words-grid" id="words-grid">
+            <!-- Words will be generated here -->
+        </div>
+    </div>
+    
+    <div class="game-over" id="game-over">
+        <div class="game-over-content">
+            <h2 id="game-over-title">เกมจบแล้ว!</h2>
+            <div class="final-score" id="final-score">0</div>
+            <p id="game-over-message" style="font-size: 1.4rem; margin-bottom: 35px;">คุณทำได้ดีมาก!</p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <button class="restart-btn" onclick="restartGame()">🎮 เล่นใหม่อีกครั้ง</button>
+                <button class="learn-btn" onclick="showLearningSection()">📚 เรียนรู้เพิ่มเติม</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="learning-section" id="learning-section">
+        <div class="learning-content">
+            <div class="learning-header">
+                <h2>📚 ศึกษาความแตกต่างของคำในภาษาไทย</h2>
+                <button class="close-btn" onclick="hideLearningSection()">✕</button>
+            </div>
+            
+            <div class="learning-tabs">
+                <button class="tab-btn active" onclick="showTab('compound')">คำประสม</button>
+                <button class="tab-btn" onclick="showTab('samas')">คำสมาส</button>
+                <button class="tab-btn" onclick="showTab('duplicate')">คำซ้อน</button>
+                <button class="tab-btn" onclick="showTab('root')">คำมูล</button>
+                <button class="tab-btn" onclick="showTab('sandhi')">คำสมาสสนธิ</button>
+            </div>
+            
+            <div class="tab-content active" id="compound-tab">
+                <h3>🎯 คำประสม (Compound Words)</h3>
+                <div class="definition-box">
+                    <p><strong>นิยาม:</strong> คำที่เกิดจากการนำคำสองคำมารวมกัน โดยมีความหมายใหม่ที่แตกต่างจากคำเดิม</p>
+                </div>
+                <div class="examples-grid">
+                    <div class="example-card correct-example">
+                        <h4>ตัวอย่างคำประสม</h4>
+                        <ul>
+                            <li><strong>น้ำแข็ง</strong> = น้ำ + แข็ง</li>
+                            <li><strong>ดินสอ</strong> = ดิน + สอ</li>
+                            <li><strong>รถไฟ</strong> = รถ + ไฟ</li>
+                            <li><strong>หนังสือ</strong> = หนัง + สือ</li>
+                            <li><strong>แสงแดด</strong> = แสง + แดด</li>
+                        </ul>
+                    </div>
+                    <div class="example-card">
+                        <h4>คุณสมบัติสำคัญ</h4>
+                        <ul>
+                            <li>✅ มีความหมายใหม่จากการรวมกัน</li>
+                            <li>✅ ใช้ในชีวิตประจำวันบ่อย</li>
+                            <li>✅ เข้าใจง่าย ไม่ซับซ้อน</li>
+                            <li>✅ มักเป็นคำนาม</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="samas-tab">
+                <h3>👑 คำสมาส (Royal/Formal Compound)</h3>
+                <div class="definition-box">
+                    <p><strong>นิยาม:</strong> คำที่มีลักษณะทางการ มักใช้ในราชการ หรือเป็นคำที่มีความเป็นทางการสูง</p>
+                </div>
+                <div class="examples-grid">
+                    <div class="example-card wrong-example">
+                        <h4>ตัวอย่างคำสมาส</h4>
+                        <ul>
+                            <li><strong>ราชบุตร</strong> = ลูกชายของกษัตริย์</li>
+                            <li><strong>มหาเทพ</strong> = เทพที่ยิ่งใหญ่</li>
+                            <li><strong>อธิบดี</strong> = หัวหน้าระดับสูง</li>
+                            <li><strong>รัฐมนตรี</strong> = รัฐ + มนตรี</li>
+                            <li><strong>อธิการบดี</strong> = หัวหน้ามหาวิทยาลัย</li>
+                        </ul>
+                    </div>
+                    <div class="example-card">
+                        <h4>คุณสมบัติสำคัญ</h4>
+                        <ul>
+                            <li>❌ เป็นคำทางการ</li>
+                            <li>❌ ใช้ในราชการ/องค์กร</li>
+                            <li>❌ มีความเป็นทางการสูง</li>
+                            <li>❌ ไม่ใช่คำประสมธรรมดา</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="duplicate-tab">
+                <h3>🔄 คำซ้อน (Reduplication)</h3>
+                <div class="definition-box">
+                    <p><strong>นิยาม:</strong> คำที่เกิดจากการนำคำเดียวกันมาซ้ำ เพื่อเน้นความหมายหรือแสดงระดับ</p>
+                </div>
+                <div class="examples-grid">
+                    <div class="example-card wrong-example">
+                        <h4>ตัวอย่างคำซ้อน</h4>
+                        <ul>
+                            <li><strong>เด็กเด็ก</strong> = เด็กมาก</li>
+                            <li><strong>สวยสวย</strong> = สวยมาก</li>
+                            <li><strong>เก่าเก่า</strong> = เก่ามาก</li>
+                            <li><strong>ใหม่ใหม่</strong> = ใหม่มาก</li>
+                            <li><strong>ร้อนร้อน</strong> = ร้อนมาก</li>
+                        </ul>
+                    </div>
+                    <div class="example-card">
+                        <h4>คุณสมบัติสำคัญ</h4>
+                        <ul>
+                            <li>❌ ซ้ำคำเดียวกัน</li>
+                            <li>❌ เน้นความหมาย</li>
+                            <li>❌ แสดงระดับความ</li>
+                            <li>❌ ไม่ใช่การรวมคำต่างกัน</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="root-tab">
+                <h3>🌱 คำมูล (Root Words)</h3>
+                <div class="definition-box">
+                    <p><strong>นิยาม:</strong> คำพื้นฐานที่ไม่ได้เกิดจากการรวมคำอื่น เป็นคำเดี่ยวที่มีความหมายในตัวเอง</p>
+                </div>
+                <div class="examples-grid">
+                    <div class="example-card wrong-example">
+                        <h4>ตัวอย่างคำมูล</h4>
+                        <ul>
+                            <li><strong>กิน</strong> = การบริโภคอาหาร</li>
+                            <li><strong>ดื่ม</strong> = การบริโภคเครื่องดื่ม</li>
+                            <li><strong>นอน</strong> = การพักผ่อน</li>
+                            <li><strong>เดิน</strong> = การเคลื่อนไหว</li>
+                            <li><strong>ดู</strong> = การมอง</li>
+                        </ul>
+                    </div>
+                    <div class="example-card">
+                        <h4>คุณสมบัติสำคัญ</h4>
+                        <ul>
+                            <li>❌ เป็นคำเดี่ยว</li>
+                            <li>❌ ไม่ได้รวมจากคำอื่น</li>
+                            <li>❌ เป็นคำพื้นฐาน</li>
+                            <li>❌ มักเป็นกริยา คุณศัพท์</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="sandhi-tab">
+                <h3>🔗 คำสมาสสนธิ (Sandhi Compound)</h3>
+                <div class="definition-box">
+                    <p><strong>นิยาม:</strong> คำที่เกิดจากการรวมคำโดยมีการเปลี่ยนแปลงเสียงหรือรูปแบบ มักเป็นคำทางวิชาการ</p>
+                </div>
+                <div class="examples-grid">
+                    <div class="example-card wrong-example">
+                        <h4>ตัวอย่างคำสมาสสนธิ</h4>
+                        <ul>
+                            <li><strong>สุริยุปราคา</strong> = สุริยะ + อุปราคา</li>
+                            <li><strong>วิทยาศาสตร์</strong> = วิทยา + ศาสตร์</li>
+                            <li><strong>คณิตศาสตร์</strong> = คณิต + ศาสตร์</li>
+                            <li><strong>ปฐมนิเทศ</strong> = ปฐม + นิเทศ</li>
+                            <li><strong>มหาวิทยาลัย</strong> = มหา + วิทยาลัย</li>
+                        </ul>
+                    </div>
+                    <div class="example-card">
+                        <h4>คุณสมบัติสำคัญ</h4>
+                        <ul>
+                            <li>❌ มีการเปลี่ยนแปลงเสียง</li>
+                            <li>❌ เป็นคำทางวิชาการ</li>
+                            <li>❌ ซับซ้อนกว่าคำประสม</li>
+                            <li>❌ มักมาจากภาษาบาลี สันสกฤต</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="learning-summary">
+                <h3>📝 สรุปสำคัญ</h3>
+                <div class="summary-box">
+                    <p><strong>🎯 เป้าหมายในเกม:</strong> เลือกเฉพาะ <span class="highlight-correct">คำประสม</span> เท่านั้น!</p>
+                    <p><strong>❌ หลีกเลี่ยง:</strong> คำสมาส, คำซ้อน, คำมูล, คำสมาสสนธิ</p>
+                    <p><strong>💡 เคล็ดลับ:</strong> คำประสมมักเป็นคำที่ใช้ในชีวิตประจำวัน และมีความหมายใหม่จากการรวมคำ</p>
+                </div>
+            </div>
+            
+            <div class="learning-footer">
+                <button class="practice-btn" onclick="hideLearningSection(); restartGame();">🎮 ฝึกฝนต่อ</button>
+            </div>
+            
+            <div class="credits-section">
+                <h3>👨‍💻 ทีมพัฒนา</h3>
+                <div class="credits-container">
+                    <div class="credit-card">
+                        <div class="developer-avatar">🧑‍💻</div>
+                        <h4>นาย อัชฌา ปาลี</h4>
+                        <p>เลขที่ 2 ชั้น ม.5/5</p>
+                        <div class="role-badge">Lead Developer</div>
+                    </div>
+                    <div class="credit-card">
+                        <div class="developer-avatar">👨‍💻</div>
+                        <h4>นาย ปันณวิชญ์ นพสุจริตรัตน์</h4>
+                        <p>เลขที่ 10 ชั้น ม.5/5</p>
+                        <div class="role-badge">Game Designer</div>
+                    </div>
+                    <div class="credit-card">
+                        <div class="developer-avatar">🎨</div>
+                        <h4>นาย ภัทร์ภณ ตามา</h4>
+                        <p>เลขที่ 22 ชั้น ม.5/5</p>
+                        <div class="role-badge">UI/UX Designer</div>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <div class="team-badge">
+                        <span class="badge-icon">🎓</span>
+                        <span class="badge-text">Gifted Computer Program</span>
+                    </div>
+                    <p class="development-note">พัฒนาด้วยความตั้งใจเพื่อการเรียนรู้ภาษาไทยอย่างสนุกสนาน</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class AdvancedCompoundWordGame {
+            constructor() {
+                this.score = 0;
+                this.questionNumber = 1;
+                this.timeLeft = 7;
+                this.gameActive = true;
+                this.targetScore = 1500;
+                
+                // คำประสม (คำที่ถูกต้อง)
+                this.compoundWords = [
+                    "น้ำแข็ง", "ดินสอ", "เสื้อผ้า", "รถไฟ", "หนังสือ", "ข้าวโพด",
+                    "ลูกบอล", "แสงแดด", "ใจดี", "หูฟัง", "แว่นตา", "เก้าอี้",
+                    "โต๊ะเขียน", "ลิงโลด", "ปลาทอง", "ดอกไม้", "ลูกชาย", "แม่บ้าน",
+                    "พ่อครัว", "เด็กชาย", "เด็กสาว", "ไก่ป่า", "หมาป่า", "ช้างป่า",
+                    "นกแก้ว", "ปลาดาว", "หนูหนัง", "แกะดำ", "วัวแดง", "หมูป่า",
+                    "ไฟฟ้า", "น้ำมัน", "ลูกไม้", "ดาวดวง", "ใจเย็น", "หัวใจ"
+                ];
+                
+                // คำสมาส
+                this.samasWords = [
+                    "ราชบุตร", "พระราชา", "มหาเทพ", "อธิบดี", "นายกฯ", "รัฐมนตรี",
+                    "ปลัดกระทรวง", "อธิการบดี", "ราชการ", "พระพุทธ", "มหาวิทยาลัย",
+                    "รองนายก", "ผู้อำนวยการ", "นายแพทย์", "ครูใหญ่", "หัวหน้า"
+                ];
+                
+                // คำซ้อน
+                this.duplicateWords = [
+                    "เด็กเด็ก", "เก่าเก่า", "ใหม่ใหม่", "ดีดี", "เล็กเล็ก", "ใหญ่ใหญ่",
+                    "สวยสวย", "งามงาม", "ร้อนร้อน", "เย็นเย็น", "หวานหวาน", "เปรี้ยวเปรี้ยว",
+                    "ขาวขาว", "ดำดำ", "แดงแดง", "เขียวเขียว", "เหลืองเหลือง", "น้ำเงินน้ำเงิน"
+                ];
+                
+                // คำมูล
+                this.rootWords = [
+                    "กิน", "ดื่ม", "นอน", "นั่ง", "ยืน", "เดิน", "วิ่ง", "กระโดด",
+                    "มอง", "ดู", "ฟัง", "พูด", "เขียน", "อ่าน", "คิด", "รู้",
+                    "รัก", "เกลียด", "ดี", "เลว", "สูง", "เตี้ย", "ยาว", "สั้น"
+                ];
+                
+                // คำสมาสสนธิ
+                this.sandhiWords = [
+                    "สุริยุปราคา", "จันทรุปราคา", "พระอาทิตย์", "พระจันทร์", "สุริยคติ",
+                    "จันทรคติ", "ปฐมนิเทศ", "สมาคมนักเรียน", "วิทยาลัย", "มหาวิทยาลัย",
+                    "อนุปริญญา", "ปริญญาตรี", "ปริญญาโท", "ปริญญาเอก", "วิทยาศาสตร์", "คณิตศาสตร์"
+                ];
+                
+                this.currentWords = [];
+                this.correctAnswer = null;
+                this.timer = null;
+                
+                this.initGame();
+            }
+            
+            initGame() {
+                this.generateQuestion();
+                this.startTimer();
+                this.updateDisplay();
+            }
+            
+            generateQuestion() {
+                // สุ่มเลือกคำประสม 1 คำ (คำตอบที่ถูก)
+                const compoundIndex = Math.floor(Math.random() * this.compoundWords.length);
+                this.correctAnswer = this.compoundWords[compoundIndex];
+                
+                // สุ่มเลือกคำจากประเภทอื่นๆ 3 คำ
+                const wrongWords = [];
+                const wordTypes = [this.samasWords, this.duplicateWords, this.rootWords, this.sandhiWords];
+                
+                while (wrongWords.length < 3) {
+                    const typeIndex = Math.floor(Math.random() * wordTypes.length);
+                    const wordArray = wordTypes[typeIndex];
+                    const wordIndex = Math.floor(Math.random() * wordArray.length);
+                    const wrongWord = wordArray[wordIndex];
+                    
+                    if (!wrongWords.includes(wrongWord)) {
+                        wrongWords.push(wrongWord);
+                    }
+                }
+                
+                // รวมคำทั้งหมดและสุ่มลำดับ
+                this.currentWords = [this.correctAnswer, ...wrongWords];
+                this.shuffleArray(this.currentWords);
+                
+                this.renderWords();
+                this.updateInstruction();
+                this.updateHint();
+            }
+            
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+            
+            renderWords() {
+                const wordsGrid = document.getElementById('words-grid');
+                wordsGrid.innerHTML = '';
+                
+                this.currentWords.forEach((word, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'word-btn';
+                    button.textContent = word;
+                    button.onclick = () => this.selectWord(word, button);
+                    wordsGrid.appendChild(button);
+                });
+            }
+            
+            updateInstruction() {
+                const instructions = [
+                    "เลือกคำประสมจากตัวเลือกด้านล่าง",
+                    "หาคำที่เกิดจากการรวมคำสองคำเข้าด้วยกัน",
+                    "ระวัง! อย่าเลือกคำสมาส คำซ้อน คำมูล หรือคำสมาสสนธิ",
+                    "เลือกคำที่มีความหมายใหม่จากการรวมคำ",
+                    "คำประสมคือคำที่เกิดจากคำสองคำรวมกัน"
+                ];
+                
+                const randomInstruction = instructions[Math.floor(Math.random() * instructions.length)];
+                document.getElementById('instruction').textContent = randomInstruction;
+            }
+            
+            updateHint() {
+                const hints = [
+                    "💡 คำใบ้: ในข้อนี้มีคำประสม 1 คำ และคำประเภทอื่น 3 คำ",
+                    "🔍 คำใบ้: คำประสมจะมีความหมายใหม่จากการรวมคำ",
+                    "⚡ คำใบ้: คำสมาส คำซ้อน คำมูล ไม่ใช่คำประสม",
+                    "🎯 คำใบ้: มองหาคำที่เกิดจากคำสองคำมารวมกัน",
+                    "🔥 คำใบ้: เลือกอย่างรวดเร็ว เวลาเหลือน้อย!"
+                ];
+                
+                const randomHint = hints[Math.floor(Math.random() * hints.length)];
+                document.getElementById('word-hint').textContent = randomHint;
+            }
+            
+            selectWord(selectedWord, buttonElement) {
+                if (!this.gameActive) return;
+                
+                this.gameActive = false;
+                clearInterval(this.timer);
+                
+                const allButtons = document.querySelectorAll('.word-btn');
+                allButtons.forEach(btn => btn.style.pointerEvents = 'none');
+                
+                if (selectedWord === this.correctAnswer) {
+                    buttonElement.classList.add('correct');
+                    this.score += 100;
+                    this.showSuccessEffect();
+                    
+                    setTimeout(() => {
+                        if (this.score >= this.targetScore) {
+                            this.endGame(true);
+                        } else {
+                            this.nextQuestion();
+                        }
+                    }, 1800);
+                } else {
+                    buttonElement.classList.add('wrong');
+                    this.explodeBomb();
+                    
+                    // แสดงคำตอบที่ถูกต้อง
+                    allButtons.forEach(btn => {
+                        if (btn.textContent === this.correctAnswer) {
+                            btn.classList.add('correct');
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        this.endGame(false);
+                    }, 3000);
+                }
+            }
+            
+            showSuccessEffect() {
+                const bomb = document.getElementById('bomb');
+                bomb.style.background = 'radial-gradient(circle at 30% 30%, #48bb78, #38a169)';
+                bomb.classList.remove('ultra-critical');
+                
+                setTimeout(() => {
+                    bomb.style.background = 'radial-gradient(circle at 30% 30%, #4a5568, #1a202c)';
+                }, 1500);
+            }
+            
+            explodeBomb() {
+                const explosion = document.getElementById('explosion');
+                const bomb = document.getElementById('bomb');
+                const gameContainer = document.querySelector('.game-container');
+                
+                // เอฟเฟกต์หน้าจอสั่น
+                gameContainer.classList.add('screen-shake');
+                
+                // แอนิเมชันระเบิด
+                explosion.classList.add('active');
+                bomb.style.opacity = '0';
+                
+                setTimeout(() => {
+                    explosion.classList.remove('active');
+                    gameContainer.classList.remove('screen-shake');
+                }, 2500);
+            }
+            
+            nextQuestion() {
+                this.questionNumber++;
+                this.timeLeft = 7;
+                this.gameActive = true;
+                
+                // รีเซ็ตสไตล์ปุ่ม
+                const allButtons = document.querySelectorAll('.word-btn');
+                allButtons.forEach(btn => {
+                    btn.classList.remove('correct', 'wrong');
+                    btn.style.pointerEvents = 'auto';
+                });
+                
+                this.generateQuestion();
+                this.startTimer();
+                this.updateDisplay();
+            }
+            
+            startTimer() {
+                const timerElement = document.getElementById('timer');
+                const bomb = document.getElementById('bomb');
+                
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    timerElement.textContent = this.timeLeft;
+                    
+                    if (this.timeLeft <= 3) {
+                        timerElement.classList.add('critical');
+                        bomb.classList.add('ultra-critical');
+                    } else {
+                        timerElement.classList.remove('critical');
+                        bomb.classList.remove('ultra-critical');
+                    }
+                    
+                    if (this.timeLeft <= 0) {
+                        this.explodeBomb();
+                        this.gameActive = false;
+                        clearInterval(this.timer);
+                        
+                        setTimeout(() => {
+                            this.endGame(false);
+                        }, 3000);
+                    }
+                    
+                    this.updateDisplay();
+                }, 1000);
+            }
+            
+            updateDisplay() {
+                document.getElementById('score').textContent = this.score;
+                document.getElementById('question-num').textContent = this.questionNumber;
+                document.getElementById('time-left').textContent = this.timeLeft;
+                
+                const progress = (this.score / this.targetScore) * 100;
+                document.getElementById('progress').style.width = `${Math.min(progress, 100)}%`;
+                
+                document.getElementById('progress-text').textContent = `${this.score}/1500`;
+            }
+            
+            endGame(won) {
+                clearInterval(this.timer);
+                
+                const gameOver = document.getElementById('game-over');
+                const title = document.getElementById('game-over-title');
+                const finalScore = document.getElementById('final-score');
+                const message = document.getElementById('game-over-message');
+                
+                finalScore.textContent = this.score;
+                
+                if (won) {
+                    title.textContent = '🎉 ยินดีด้วย!';
+                    title.style.color = '#48bb78';
+                    message.textContent = `คุณผ่านเป้าหมาย ${this.targetScore} แต้มแล้ว! เก่งมากในการแยกแยะคำประสม!`;
+                } else {
+                    title.textContent = '💥 ระเบิดแตกแล้ว!';
+                    title.style.color = '#ff4757';
+                    
+                    if (this.score >= 1200) {
+                        message.textContent = 'เกือบแล้ว! คุณเก่งมากในการจำแนกคำประสม';
+                    } else if (this.score >= 800) {
+                        message.textContent = 'ทำได้ดีแล้ว! ลองศึกษาความแตกต่างของคำประเภทต่างๆ เพิ่มเติม';
+                    } else if (this.score >= 400) {
+                        message.textContent = 'ไม่เป็นไร ฝึกฝนการจำแนกคำประสมเพิ่มเติม';
+                    } else {
+                        message.textContent = 'ลองศึกษาความหมายของคำประสมและคำประเภทอื่นๆ เพิ่มเติมนะ!';
+                    }
+                }
+                
+                gameOver.style.display = 'flex';
+            }
+        }
+        
+        let game;
+        
+        function startGameFromWelcome() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('game-container').style.display = 'block';
+            game = new AdvancedCompoundWordGame();
+        }
+        
+        function restartGame() {
+            document.getElementById('game-over').style.display = 'none';
+            
+            // รีเซ็ตระเบิดและทุกอย่างกลับสู่สถานะเริ่มต้น
+            const bomb = document.getElementById('bomb');
+            const explosion = document.getElementById('explosion');
+            const timerElement = document.getElementById('timer');
+            const gameContainer = document.querySelector('.game-container');
+            
+            // รีเซ็ตระเบิด
+            bomb.style.opacity = '1';
+            bomb.style.background = 'radial-gradient(circle at 30% 30%, #4a5568, #1a202c)';
+            bomb.classList.remove('ultra-critical');
+            
+            // รีเซ็ตระเบิดที่แตก
+            explosion.classList.remove('active');
+            
+            // รีเซ็ตไทเมอร์
+            timerElement.classList.remove('critical');
+            timerElement.textContent = '7';
+            
+            // รีเซ็ตหน้าจอสั่น
+            gameContainer.classList.remove('screen-shake');
+            
+            // รีเซ็ตปุ่มคำ
+            const allButtons = document.querySelectorAll('.word-btn');
+            allButtons.forEach(btn => {
+                btn.classList.remove('correct', 'wrong');
+                btn.style.pointerEvents = 'auto';
+            });
+            
+            // เริ่มเกมใหม่
+            game = new AdvancedCompoundWordGame();
+        }
+        
+        // ฟังก์ชันสำหรับระบบสอนเพิ่มเติม
+        function showLearningSection() {
+            document.getElementById('learning-section').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hideLearningSection() {
+            document.getElementById('learning-section').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function showTab(tabName) {
+            // ซ่อนทุก tab content
+            const allTabs = document.querySelectorAll('.tab-content');
+            allTabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // ลบ active class จากทุกปุ่ม tab
+            const allTabBtns = document.querySelectorAll('.tab-btn');
+            allTabBtns.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // แสดง tab ที่เลือก
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // เพิ่ม active class ให้ปุ่มที่คลิก
+            event.target.classList.add('active');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9673dfd732e3d32e',t:'MTc1Mzg2ODIxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
